@@ -33,6 +33,7 @@ use winit::{
     self,
     dpi::{self, PhysicalPosition},
 };
+use std::path::PathBuf;
 
 pub(crate) struct FrameContext {
     pub cmd: wgpu::CommandEncoder,
@@ -107,9 +108,23 @@ impl GraphicsContext {
         filesystem: &Filesystem,
     ) -> GameResult<Self> {
         let new_instance = |backends| {
+            
+            let mut path = PathBuf::new();
+            path.push("dxc_2025_02_20");
+            path.push("bin");
+            if cfg!(target_arch = "x86"){
+                path.push("x86");
+            }else if cfg!(target_arch = "x86_64"){
+                path.push("x64");
+            }else{
+                path.push("arm64");
+            }
             wgpu::Instance::new(wgpu::InstanceDescriptor {
                 backends,
-                dx12_shader_compiler: Default::default(),
+                dx12_shader_compiler: wgpu::Dx12Compiler::Dxc{
+                    dxil_path:Some(path.clone()),
+                    dxc_path:Some(path),
+                },
             })
         };
 
@@ -147,7 +162,6 @@ impl GraphicsContext {
                 Backend::Vulkan => wgpu::Backends::VULKAN,
                 Backend::Metal => wgpu::Backends::METAL,
                 Backend::Dx12 => wgpu::Backends::DX12,
-                Backend::Dx11 => wgpu::Backends::DX11,
                 Backend::Gl => wgpu::Backends::GL,
                 Backend::BrowserWebGpu => wgpu::Backends::BROWSER_WEBGPU,
             });

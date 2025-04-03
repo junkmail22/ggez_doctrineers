@@ -346,17 +346,6 @@ impl ContextBuilder {
     }
 }
 
-/// Terminates the [`ggez::event::run()`](crate::event::run) loop _without_ requesting a
-/// [`quit_event`](crate::event::EventHandler::quit_event). [`Context.continuing`](struct.Context.html#structfield.continuing)
-/// is set to `false` and the loop breaks.
-#[deprecated(
-    since = "0.8.0",
-    note = "Use [`ctx.request_quit`](struct.Context.html#method.request_quit) instead."
-)]
-pub fn quit(ctx: &mut Context) {
-    ctx.continuing = false;
-}
-
 #[cfg(test)]
 mod tests {
     use crate::{
