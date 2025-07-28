@@ -110,7 +110,7 @@ impl GraphicsContext {
         let new_instance = |backends| {
             
             let mut path = PathBuf::new();
-            path.push("dxc_2025_02_20");
+            path.push("dxc_2025_07_14");
             path.push("bin");
             if cfg!(target_arch = "x86"){
                 path.push("x86");
